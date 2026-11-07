@@ -1,0 +1,37 @@
+<div class="login-container">
+  <div class="login-card">
+    <h1>SmartSpend</h1>
+    <h2>Welcome Back!</h2>
+    <p>Login to manage your expenses.</p>
+
+    <form (ngSubmit)="onSubmit()">
+
+      <label>Email</label>
+      <input
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        placeholder="Enter your email"
+        required
+      />
+
+      <label>Password</label>
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        placeholder="Enter your password"
+        required
+      />
+
+      <p class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </p>
+
+      <button type="submit">Login</button>
+
+    </form>
+
+    <p>Don't have an account? <a href="#">Register</a></p>
+  </div>
+</div>
