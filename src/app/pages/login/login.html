@@ -1,37 +1,28 @@
 <div class="login-container">
-  <div class="login-card">
-    <h1>SmartSpend</h1>
-    <h2>Welcome Back!</h2>
-    <p>Login to manage your expenses.</p>
+    <div class="login-card">
+        <h1>SmartSpend</h1>
+        <h2>Welcome Back!</h2>
+        <p>Login to manage your expenses.</p>
 
-    <form (ngSubmit)="onSubmit()">
+        <form (ngSubmit)="onSubmit()" autocomplete="off">
 
-      <label>Email</label>
-      <input
-        type="email"
-        name="email"
-        [(ngModel)]="email"
-        placeholder="Enter your email"
-        required
-      />
+            <label>Email</label>
+            <input type="email" name="email" [(ngModel)]="email" placeholder="Enter your email" required autocomplete="off"/>
 
-      <label>Password</label>
-      <input
-        type="password"
-        name="password"
-        [(ngModel)]="password"
-        placeholder="Enter your password"
-        required
-      />
+            <label>Password</label>
+            <input  type="password" name="password" [(ngModel)]="password" placeholder="Enter your password" required autocomplete="new-password"/>
 
-      <p class="error-message" *ngIf="errorMessage">
-        {{ errorMessage }}
-      </p>
+            <p class="error-message" *ngIf="errorMessage">
+                {{ errorMessage }}
+            </p>
 
-      <button type="submit">Login</button>
+            <button type="submit">Login</button>
 
-    </form>
+        </form>
 
-    <p>Don't have an account? <a href="#">Register</a></p>
-  </div>
+        <p>
+            Don't have an account?
+            <a routerLink="/register">Register</a>
+        </p>
+    </div>
 </div>

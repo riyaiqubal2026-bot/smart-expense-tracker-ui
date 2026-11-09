@@ -3,7 +3,8 @@ import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 // import { Component, OnInit, inject } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { ExpenseService, Expense } from '../../services/expense';
-
+import { Router } from '@angular/router';
+import { Auth } from '../../services/auth';
 @Component({
   selector: 'app-dashboard',
   imports: [CurrencyPipe],
@@ -12,6 +13,8 @@ import { ExpenseService, Expense } from '../../services/expense';
 })
 export class Dashboard implements OnInit {
   private cdr = inject(ChangeDetectorRef);
+  private auth = inject(Auth);
+  private router = inject(Router);
 
   private expenseService = inject(ExpenseService);
 
@@ -32,6 +35,10 @@ export class Dashboard implements OnInit {
       )
       .slice(0, 5);
   }
+  logout(): void {
+    this.auth.logout();
+    this.router.navigate(['/login']);
+  }
 
   ngOnInit(): void {
     this.expenseService.getAllExpenses().subscribe({
@@ -48,5 +55,8 @@ export class Dashboard implements OnInit {
         console.error('Error fetching expenses:', error);
       }
     });
+
   }
+
+
 }

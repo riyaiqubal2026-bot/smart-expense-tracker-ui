@@ -13,6 +13,13 @@ export interface LoginResponse {
     name: string;
     email: string;
 }
+
+export interface RegisterRequest {
+    name: string;
+    email: string;
+    age: number;
+    password: string;
+}
 @Injectable({
     providedIn: 'root'
 })
@@ -27,6 +34,12 @@ export class Auth {
             request
         );
     }
+    register(request: RegisterRequest): Observable<any> {
+        return this.http.post(
+            `${this.apiUrl}/saveUser`,
+            request
+        );
+    }
 
     saveToken(token: string): void {
         localStorage.setItem('token', token);
@@ -35,4 +48,29 @@ export class Auth {
     getToken(): string | null {
         return localStorage.getItem('token');
     }
+    logout(): void {
+        localStorage.removeItem('token');
+    }
+    isTokenExpired(): boolean {
+  const token = this.getToken();
+
+  if (!token) {
+    return true;
+  }
+
+  try {
+    const payload = JSON.parse(
+      atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))
+    );
+
+    if (!payload.exp) {
+      return true;
+    }
+
+    return Date.now() >= payload.exp * 1000;
+
+  } catch {
+    return true;
+  }
+}
 }

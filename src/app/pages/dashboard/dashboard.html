@@ -14,7 +14,9 @@
 
     <div class="sidebar-bottom">
       <a>Settings</a>
-      <a>Logout</a>
+      <a href="#" (click)="logout(); $event.preventDefault()">
+  Logout
+</a>
     </div>
   </aside>
 
@@ -30,6 +32,9 @@
         <span>R</span>
         <strong>Riya</strong>
       </div>
+      <!-- <button class="logout-btn" (click)="logout()">
+  Logout
+</button> -->
     </header>
 
     <section class="summary-cards">

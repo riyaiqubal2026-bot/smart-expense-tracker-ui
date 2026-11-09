@@ -1,24 +1,26 @@
-
 import { Routes } from '@angular/router';
 import { Login } from './pages/login/login';
 import { Dashboard } from './pages/dashboard/dashboard';
+import { Register } from './pages/register/register';
+import { authGuard } from './guards/auth-guard';
+import { guestGuard } from './guards/guest-guard';
 
 export const routes: Routes = [
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { 
+  path: 'login', 
+  component: Login, 
+  canActivate: [guestGuard] 
+},
+{ 
+  path: 'register', 
+  component: Register, 
+  canActivate: [guestGuard] 
+},
   {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },
-  {
-    path: 'login',
-    component: Login
-  },
-  {
-    path: 'dashboard',
-    component: Dashboard
-  },
-  {
-    path: '**',
-    redirectTo: 'login'
-  }
+  path: 'dashboard',
+  component: Dashboard,
+  canActivate: [authGuard]
+},
+  { path: '**', redirectTo: 'login' }
 ];
