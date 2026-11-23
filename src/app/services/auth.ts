@@ -49,7 +49,17 @@ export class Auth {
         return localStorage.getItem('token');
     }
     logout(): void {
-        localStorage.removeItem('token');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+}
+    saveUser(user: LoginResponse): void {
+        localStorage.setItem('user', JSON.stringify(user));
+    }
+
+    getUser(): LoginResponse | null {
+        const user = localStorage.getItem('user');
+
+        return user ? JSON.parse(user) : null;
     }
     isTokenExpired(): boolean {
   const token = this.getToken();
@@ -72,5 +82,6 @@ export class Auth {
   } catch {
     return true;
   }
+
 }
 }

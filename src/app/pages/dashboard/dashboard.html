@@ -1,119 +1,116 @@
-
 <div class="app-container">
 
-  <aside class="sidebar">
-    <h2 class="logo">SmartSpend</h2>
+    <aside class="sidebar">
+        <h2 class="logo">SmartSpend</h2>
 
-    <nav>
-      <a class="active">Dashboard</a>
-      <a>Transactions</a>
-      <a>Categories</a>
-      <a>Budgets</a>
-      <a>Reports</a>
-    </nav>
+        <nav>
+            <a class="active">Dashboard</a>
+            <a routerLink="/transactions">Transactions</a>
+            <a routerLink="/categories" routerLinkActive="active">
+                Categories
+            </a>
+            <a routerLink="/budgets" routerLinkActive="active">
+                Budgets
+            </a>
+            <a>Reports</a>
+        </nav>
 
-    <div class="sidebar-bottom">
-      <a>Settings</a>
-      <a href="#" (click)="logout(); $event.preventDefault()">
-  Logout
-</a>
-    </div>
-  </aside>
-
-  <main class="main-content">
-
-    <header class="topbar">
-      <div>
-        <h1>Dashboard</h1>
-        <p>Welcome back! Here's your financial overview.</p>
-      </div>
-
-      <div class="profile">
-        <span>R</span>
-        <strong>Riya</strong>
-      </div>
-      <!-- <button class="logout-btn" (click)="logout()">
-  Logout
-</button> -->
-    </header>
-
-    <section class="summary-cards">
-      <div class="summary-card">
-        <p>Total Balance</p>
-        <h2>$8,450.00</h2>
-      </div>
-
-      <div class="summary-card">
-        <p>Monthly Income</p>
-        <h2>$5,000.00</h2>
-      </div>
-
-      <div class="summary-card">
-        <p>Total Expenses</p>
-        <h2>{{totalExpenses | currency:'AUD':'symbol':'1.2-2'}}</h2>
-      </div>
-
-      <div class="summary-card">
-        <p>Savings</p>
-        <h2>$2,650.00</h2>
-      </div>
-    </section>
-
-    <section class="dashboard-content">
-      <div class="dashboard-card">
-        <h3>Spending Overview</h3>
-
-        <div class="chart">
-          <div class="chart-bar">
-            <div class="bar" style="height: 45%"></div>
-            <span>Mon</span>
-          </div>
-          <div class="chart-bar">
-            <div class="bar" style="height: 70%"></div>
-            <span>Tue</span>
-          </div>
-          <div class="chart-bar">
-            <div class="bar" style="height: 55%"></div>
-            <span>Wed</span>
-          </div>
-          <div class="chart-bar">
-            <div class="bar" style="height: 90%"></div>
-            <span>Thu</span>
-          </div>
-          <div class="chart-bar">
-            <div class="bar" style="height: 60%"></div>
-            <span>Fri</span>
-          </div>
-          <div class="chart-bar">
-            <div class="bar" style="height: 35%"></div>
-            <span>Sat</span>
-          </div>
-          <div class="chart-bar">
-            <div class="bar" style="height: 75%"></div>
-            <span>Sun</span>
-          </div>
+        <div class="sidebar-bottom">
+            <a>Settings</a>
+            <a href="#" (click)="logout(); $event.preventDefault()">
+                Logout
+            </a>
         </div>
-      </div>
+    </aside>
 
-      <div class="dashboard-card">
-        <h3>Recent Transactions</h3>
+    <main class="main-content">
 
-        @for (expense of recentExpenses; track expense.id) {
-          <div class="transaction">
+        <header class="topbar">
             <div>
-              <strong>{{expense.title}}</strong>
-              <p>{{expense.category}} · {{expense.expenseDate}}</p>
+                <h1>Dashboard</h1>
+                <p>Welcome back! Here's your financial overview.</p>
             </div>
 
-            <span class="expense">
-              -{{expense.amount | currency:'AUD':'symbol':'1.2-2'}}
-            </span>
-          </div>
-        } @empty {
-          <p>No Expenses Found.</p>
-        }
-      </div>
-    </section>
+            <div class="profile">
+                <span>{{userName.charAt(0).toUpperCase()}}</span>
+                <strong>{{userName}}</strong>
+            </div>
+            <!-- <button class="logout-btn" (click)="logout()">
+  Logout
+</button> -->
+        </header>
 
-  </main>
+        <section class="summary-cards">
+            <div class="summary-card">
+                <p>This Month's Expenses</p>
+                <h2>{{monthlyExpenses | currency:'AUD':'symbol':'1.2-2'}}</h2>
+            </div>
+
+            <div class="summary-card">
+                <p>Total Transactions</p>
+                <h2>{{totalTransaction}}</h2>
+            </div>
+
+
+            <div class="summary-card">
+                <p>Total Expenses</p>
+                <h2>{{totalExpenses | currency:'AUD':'symbol':'1.2-2'}}</h2>
+            </div>
+
+            <div class="summary-card">
+                <p>Highest Spending Category</p>
+                <h2>{{highestSpendingCategory}}</h2>
+            </div>
+        </section>
+
+        <section class="dashboard-content">
+            <div class="dashboard-card">
+                <h3>Spending Overview - {{currentYear}}</h3>
+
+
+                <div class="chart">
+                    @for (month of monthlySpending; track month.month) {
+                    <div class="chart-bar">
+                        <div class="bar" [style.height.%]="getBarHeight(month.amount)"
+                            [title]="(month.amount | currency:'AUD':'symbol':'1.2-2')">
+                        </div>
+                        <span>
+                            {{['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][month.month - 1]}}
+                        </span>
+                    </div>
+                    }
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-card">
+                <h3>Recent Transactions</h3>
+
+                @for (expense of recentExpenses; track expense.id) {
+                <div class="transaction">
+                    <div class="transaction-details">
+                        <strong>{{expense.title}}</strong>
+
+                        <div class="transaction-meta">
+                            <span class="category-badge">{{expense.category}}</span>
+                            <span class="transaction-date">
+                                {{expense.expenseDate | date:'dd MMM yyyy'}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <span class="expense">
+                        -{{expense.amount | currency:'AUD':'symbol':'1.2-2'}}
+                    </span>
+                </div>
+                }@empty {
+                <p class="empty-state">No expenses found. Add your first expense!</p>
+                }
+            </div>
+
+        </section>
+
+    </main>
 </div>

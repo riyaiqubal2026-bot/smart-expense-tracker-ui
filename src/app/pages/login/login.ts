@@ -27,7 +27,9 @@ export class Login {
       password: this.password
     }).subscribe({
       next: (response) => {
+        console.log('Login response:', response);
         this.auth.saveToken(response.token);
+        this.auth.saveUser(response);
         this.router.navigate(['/dashboard']);
       },
       error: () => {
@@ -39,4 +41,5 @@ export class Login {
   logout(): void {
     localStorage.removeItem('token');
   }
+
 }

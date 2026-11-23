@@ -1,0 +1,261 @@
+<div class="categories-container">
+
+    <!-- Page Header -->
+
+
+    <header class="page-header">
+
+        <div class="page-title">
+            <h1>Categories</h1>
+            <p>Understand where your money is going.</p>
+        </div>
+
+        <div class="header-actions">
+
+            <button class="back-dashboard-btn" routerLink="/dashboard">
+                <span>←</span> Dashboard
+            </button>
+
+            <div class="filter-section">
+
+                <select [(ngModel)]="selectedPeriod" (ngModelChange)="onPeriodChange()">
+
+                    <option value="thisMonth">This Month</option>
+                    <option value="lastMonth">Last Month</option>
+                    <option value="thisYear">This Year</option>
+                    <option value="custom">Custom Range</option>
+
+                </select>
+
+                @if (selectedPeriod === 'custom') {
+                <div class="custom-date-filter">
+
+                    <input type="date" [(ngModel)]="customStartDate" (ngModelChange)="onCustomDateChange()">
+
+                    <input type="date" [(ngModel)]="customEndDate" (ngModelChange)="onCustomDateChange()">
+
+                </div>
+                }
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- Error Message -->
+
+    @if (errorMessage) {
+    <div class="error-message">
+        {{ errorMessage }}
+    </div>
+    }
+
+
+    <!-- Loading -->
+
+    @if (loading) {
+
+    <div class="loading-message">
+        Loading category information...
+    </div>
+
+    } @else {
+
+    <!-- Summary Cards -->
+
+    <section class="summary-grid">
+
+        <div class="summary-card">
+
+            <div class="summary-icon blue">
+                $
+            </div>
+
+            <div>
+                <p>Total Spending</p>
+                <h2>{{ totalSpent | currency:'AUD' }}</h2>
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon purple">
+                #
+            </div>
+
+            <div>
+                <p>Total Transactions</p>
+                <h2>{{ totalTransactions }}</h2>
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon green">
+                ✓
+            </div>
+
+            <div>
+                <p>Categories Used</p>
+                <h2>{{ categoriesUsed }} / 7</h2>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Spending Breakdown -->
+
+    <section class="content-card">
+
+        <div class="section-heading">
+
+            <div>
+                <h2>Spending Breakdown</h2>
+                <p>See how your expenses are distributed.</p>
+            </div>
+
+        </div>
+
+
+        @if (totalSpent === 0) {
+
+        <div class="empty-state">
+            <h3>No expenses found</h3>
+            <p>
+                There are no expenses for the selected date range.
+            </p>
+        </div>
+
+        } @else {
+
+        <div class="category-breakdown">
+
+            @for (
+            item of categorySummaries;
+            track item.category
+            ) {
+
+            <div class="category-item">
+
+                <div class="category-info">
+
+                    <span class="category-name">
+                        {{ item.category }}
+                    </span>
+
+                    <span class="category-amount">
+                        {{ item.totalAmount | currency:'AUD' }}
+                    </span>
+
+                </div>
+
+
+                <div class="progress-background">
+
+                    <div class="progress-fill" [style.width.%]="getBarWidth(item.totalAmount)">
+                    </div>
+
+                </div>
+
+
+                <div class="category-percentage">
+                    {{ getPercentage(item.totalAmount) | number:'1.1-1' }}%
+                </div>
+
+            </div>
+
+            }
+
+        </div>
+
+        }
+
+    </section>
+
+
+    <!-- Category Details Table -->
+
+    <section class="content-card details-card">
+
+        <div class="section-heading">
+
+            <div>
+                <h2>Category Details</h2>
+                <p>Detailed spending information for each category.</p>
+            </div>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Category</th>
+                        <th>Total Spent</th>
+                        <th>Transactions</th>
+                        <th>Average Spending</th>
+                        <th>Percentage</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @for (
+                    item of categorySummaries;
+                    track item.category
+                    ) {
+
+                    <tr>
+
+                        <td>
+                            <span class="category-badge">
+                                {{ item.category }}
+                            </span>
+                        </td>
+
+                        <td>
+                            {{ item.totalAmount | currency:'AUD' }}
+                        </td>
+
+                        <td>
+                            {{ item.transactionCount }}
+                        </td>
+
+                        <td>
+                            {{ item.averageAmount | currency:'AUD' }}
+                        </td>
+
+                        <td>
+                            {{ getPercentage(item.totalAmount) | number:'1.1-1' }}%
+                        </td>
+
+                    </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+    }
+
+</div>
