@@ -3,10 +3,12 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { ExpenseService, Expense } from '../../services/expense';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { Sidebar } from '../../shared/sidebar/sidebar';
 
 @Component({
   selector: 'app-transactions',
-imports: [CurrencyPipe, DatePipe, FormsModule, RouterLink],  templateUrl: './transactions.html',
+imports: [CurrencyPipe, DatePipe, FormsModule, RouterLink,Sidebar],
+  templateUrl: './transactions.html',
   styleUrl: './transactions.css',
 })
 export class Transactions implements OnInit {

@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+/* Light Theme */
+:root {
+    --app-background: #f5f7fb;
+    --card-background: #ffffff;
+    --text-primary: #172554;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+}
+
+/* Dark Theme */
+:root[data-theme="dark"] {
+    --app-background: #0f172a;
+    --card-background: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --border-color: #334155;
+}
+
+:root[data-theme="dark"] {
+    --text-secondary: #e2e8f0;
+}
+
+html[data-theme="dark"] .settings-layout .setting-item p {
+    color: #f1f5f9 !important;
+    opacity: 1 !important;
+}
+
+html[data-theme="dark"] .settings-layout .setting-item h3 {
+    color: #ffffff !important;
+}

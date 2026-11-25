@@ -1,0 +1,62 @@
+<div class="settings-layout">
+    <app-sidebar></app-sidebar>
+    <main class="settings-main">
+        <header class="page-header">
+            <h1>Settings</h1>
+            <p>Manage your application preferences.</p>
+        </header>
+
+        <section class="settings-card">
+            <h2>General Preferences</h2>
+            <div class="setting-item">
+                <div>
+                    <h3>Currency</h3>
+                    <p>Choose your preferred currency.</p>
+                </div>
+                <select [(ngModel)]="currency">
+                    <option value="AUD">Australian Dollar(AUD)</option>
+                    <option value="USD">US Dollar(USD)</option>
+                    <option value="INR">Indian Rupee(INR)</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <h3>Theme</h3>
+                    <p>Choose how SmartSpend looks.</p>
+                </div>
+
+                <select [(ngModel)]="theme">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="settings-card">
+            <h2>Notifications</h2>
+            <div class="setting-item">
+                <div>
+                    <h3>Budget Alerts</h3>
+                    <p>Receive alerts when approaching your budget limit.</p>
+                </div>
+
+                <input type="checkbox" [(ngModel)]="budgetAlerts">
+
+            </div>
+            <div class="setting-item">
+                <div>
+                    <h3>Monthly Summary</h3>
+                    <p>Receive a summary of your monthly spending.</p>
+                </div>
+
+                <input type="checkbox" [(ngModel)]="monthlySummary">
+
+            </div>
+        </section>
+        <div class="settings-actions">
+            <button type="button" (click)="saveSettings()">
+                Save Settings
+            </button>
+        </div>
+    </main>
+</div>

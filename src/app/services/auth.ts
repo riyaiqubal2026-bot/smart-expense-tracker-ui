@@ -20,6 +20,14 @@ export interface RegisterRequest {
     age: number;
     password: string;
 }
+
+export interface UserProfile {
+    id: number;
+    name: string;
+    email: string;
+    age: number;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -49,9 +57,9 @@ export class Auth {
         return localStorage.getItem('token');
     }
     logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-}
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+    }
     saveUser(user: LoginResponse): void {
         localStorage.setItem('user', JSON.stringify(user));
     }
@@ -62,26 +70,38 @@ export class Auth {
         return user ? JSON.parse(user) : null;
     }
     isTokenExpired(): boolean {
-  const token = this.getToken();
+        const token = this.getToken();
 
-  if (!token) {
-    return true;
-  }
+        if (!token) {
+            return true;
+        }
 
-  try {
-    const payload = JSON.parse(
-      atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))
-    );
+        try {
+            const payload = JSON.parse(
+                atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))
+            );
 
-    if (!payload.exp) {
-      return true;
+            if (!payload.exp) {
+                return true;
+            }
+
+            return Date.now() >= payload.exp * 1000;
+
+        } catch {
+            return true;
+        }
+
     }
 
-    return Date.now() >= payload.exp * 1000;
+    getMyProfile(): Observable<UserProfile> {
+        return this.http.get<UserProfile>(`${this.apiUrl}/me`);
+    }
 
-  } catch {
-    return true;
-  }
+    updateMyProfile(profile: UserProfile): Observable<UserProfile> {
+        return this.http.put<UserProfile>(
+            `${this.apiUrl}/me`,
+            profile
+        );
+    }
 
-}
 }

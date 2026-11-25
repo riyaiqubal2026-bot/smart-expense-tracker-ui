@@ -1,27 +1,6 @@
 <div class="app-container">
 
-    <aside class="sidebar">
-        <h2 class="logo">SmartSpend</h2>
-
-        <nav>
-            <a class="active">Dashboard</a>
-            <a routerLink="/transactions">Transactions</a>
-            <a routerLink="/categories" routerLinkActive="active">
-                Categories
-            </a>
-            <a routerLink="/budgets" routerLinkActive="active">
-                Budgets
-            </a>
-            <a>Reports</a>
-        </nav>
-
-        <div class="sidebar-bottom">
-            <a>Settings</a>
-            <a href="#" (click)="logout(); $event.preventDefault()">
-                Logout
-            </a>
-        </div>
-    </aside>
+    <app-sidebar></app-sidebar>
 
     <main class="main-content">
 

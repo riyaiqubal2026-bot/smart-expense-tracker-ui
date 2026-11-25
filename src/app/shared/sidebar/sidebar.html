@@ -1,0 +1,45 @@
+
+<aside class="sidebar">
+
+    <h2 class="logo">SmartSpend</h2>
+
+    <nav>
+        <a routerLink="/dashboard" routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: true }">
+            Dashboard
+        </a>
+
+        <a routerLink="/transactions" routerLinkActive="active">
+            Transactions
+        </a>
+
+        <a routerLink="/categories" routerLinkActive="active">
+            Categories
+        </a>
+
+        <a routerLink="/budgets" routerLinkActive="active">
+            Budgets
+        </a>
+
+        <a routerLink="/reports" routerLinkActive="active">
+            Reports
+        </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+
+        <a routerLink="/account" routerLinkActive="active">
+            My Account
+        </a>
+
+        <a routerLink="/settings" routerLinkActive="active">
+            Settings
+        </a>
+
+        <a href="#" (click)="logout(); $event.preventDefault()">
+            Logout
+        </a>
+
+    </div>
+
+</aside>

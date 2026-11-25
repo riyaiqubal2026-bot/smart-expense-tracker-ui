@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Dashboard } from './dashboard';
+import { Sidebar } from '../../shared/sidebar/sidebar';
 
 describe('Dashboard', () => {
   let component: Dashboard;

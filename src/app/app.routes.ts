@@ -7,6 +7,9 @@ import { guestGuard } from './guards/guest-guard';
 import { Transactions } from './pages/transactions/transactions';
 import { Categories } from './pages/categories/categories';
 import { Budgets } from './pages/budgets/budgets';
+import { Account } from './pages/account/account';
+import { Reports } from './pages/reports/reports';
+import { Settings } from './pages/settings/settings';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -38,6 +41,21 @@ export const routes: Routes = [
     {
         path: 'budgets',
         component: Budgets,
+        canActivate: [authGuard]
+    },
+    {
+        path: 'account',
+        component: Account,
+        canActivate: [authGuard]
+    },
+    {
+        path: 'reports',
+        component: Reports,
+        canActivate: [authGuard]
+    },
+    {
+        path: 'settings',
+        component:Settings,
         canActivate: [authGuard]
     },
     { path: '**', redirectTo: 'login' }

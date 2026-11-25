@@ -7,9 +7,10 @@ import { Router } from '@angular/router';
 import { Auth } from '../../services/auth';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { Sidebar } from '../../shared/sidebar/sidebar';
 @Component({
   selector: 'app-dashboard',
-  imports: [CurrencyPipe, DatePipe, RouterLink],
+  imports: [CurrencyPipe, DatePipe, RouterLink, Sidebar],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })

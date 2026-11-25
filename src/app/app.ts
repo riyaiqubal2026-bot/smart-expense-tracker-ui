@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -8,5 +8,16 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
+export class App implements OnInit {
+
+  ngOnInit(): void {
+    const savedSettings = localStorage.getItem('smartSpendSettings');
+
+    if (savedSettings) {
+      const settings = JSON.parse(savedSettings);
+      const theme = settings.theme ?? 'light';
+
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+  }
 }

@@ -1,0 +1,139 @@
+<div class="reports-layout">
+
+    <app-sidebar></app-sidebar>
+
+    <main class="reports-main">
+
+        <header class="page-header">
+            <div>
+                <h1>Reports</h1>
+                <p>Track your spending and understand your financial habits.</p>
+            </div>
+        </header>
+
+        <section class="reports-overview">
+
+            <div class="report-card">
+                <h3>Total Expenses</h3>
+                <p class="report-value">{{ totalExpenses | currency:'AUD' }}</p>
+                <span>All time</span>
+            </div>
+
+            <div class="report-card">
+                <h3>Highest Spending</h3>
+                <p class="report-value">{{ highestSpendingCategory }}</p>
+                <span>Top category</span>
+            </div>
+
+            <div class="report-card">
+                <h3>Transactions</h3>
+                <p class="report-value">{{ totalTransactions }}</p>
+                <span>All time</span>
+            </div>
+
+            <div class="report-card">
+                <h3>Average Expense</h3>
+                <p class="report-value">
+                    {{ averageMonthlyExpense | currency:'AUD' }}
+                </p>
+                <span>Average this month</span>
+            </div>
+
+        </section>
+
+        <section class="report-chart-card">
+            <h2>Monthly Spending Trend</h2>
+            <div class="chart-header">
+                <p class="chart-subtitle">
+                    Your spending throughout {{ selectedYear }}
+                </p>
+
+                <select [(ngModel)]="selectedYear" (change)="onYearChange()">
+
+                    @for (year of years; track year) {
+                    <option [value]="year">{{ year }}</option>
+                    }
+
+                </select>
+            </div>
+            <div class="bar-chart">
+
+                @for (item of monthlySpending; track item[0]) {
+                <div class="bar-item">
+
+                    <span class="bar-amount">
+                        {{ item[1] | currency:'AUD' }}
+                    </span>
+
+                    <div class="bar-wrapper">
+                        <div class="bar" [style.height.%]="getMonthlyPercentage(item[1])">
+                        </div>
+                    </div>
+
+                    <span class="bar-label">
+                        {{ getMonthName(item[0]) }}
+                    </span>
+
+                </div>
+                }
+
+            </div>
+        </section>
+
+        <section class="report-chart-card">
+            <h2>Expenses by Category</h2>
+            <p class="chart-subtitle">Your spending breakdown for this month</p>
+            <div class="date-filter">
+
+                <div class="date-field">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate" [(ngModel)]="startDate">
+                </div>
+
+                <div class="date-field">
+                    <label for="endDate">End Date</label>
+                    <input type="date" id="endDate" [(ngModel)]="endDate">
+                </div>
+
+                <button (click)="applyDateFilter()">
+                    Apply Filter
+                </button>
+
+                <button type="button" class="reset-button" (click)="loadReportData()">
+                    Reset
+                </button>
+
+            </div>
+
+            <div class="category-chart">
+
+                @for (item of categorySummary; track item.category) {
+                <div class="category-item">
+
+                    <div class="category-info">
+                        <span>{{ item.category }}</span>
+                        <strong>{{ item.totalAmount | currency:'AUD' }}</strong>
+                    </div>
+
+                    <div class="category-track">
+                        <div class="category-fill" [style.width.%]="getCategoryPercentage(item.totalAmount)">
+                        </div>
+                    </div>
+
+                    <span class="category-count">
+                        {{ item.transactionCount }} transactions
+                    </span>
+
+                </div>
+                }
+
+                @if (categorySummary.length === 0) {
+                <p>No category spending data available for this month.</p>
+                }
+
+            </div>
+        </section>
+
+    </main>
+
+</div>

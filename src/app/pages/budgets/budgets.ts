@@ -4,10 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { BudgetService, Budget, BudgetRequest } from '../../services/budget.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { Sidebar } from '../../shared/sidebar/sidebar';
+
 @Component({
   selector: 'app-budgets',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, Sidebar],
   templateUrl: './budgets.html',
   styleUrl: './budgets.css'
 })

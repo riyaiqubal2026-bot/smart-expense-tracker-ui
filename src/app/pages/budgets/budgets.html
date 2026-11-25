@@ -1,192 +1,196 @@
-<div class="budgets-page">
+<div class="budgets-layout">
+
+    <app-sidebar></app-sidebar>
+
+    <main class="budgets-main">
+        <div class="budgets-page">
 
 
-    <div class="page-header">
+            <div class="page-header">
 
-        <div class="page-title">
-            <h1>Budgets</h1>
-            <p>Manage your monthly spending limits.</p>
-        </div>
-
-        <div class="header-actions">
-
-            <button class="dashboard-btn" routerLink="/dashboard">
-                <span>←</span> Dashboard
-            </button>
-
-            <div class="month-selector">
-                <input type="month" [value]="selectedMonth.substring(0, 7)"
-                    (change)="selectedMonth = $any($event.target).value + '-01'; loadBudgets()">
-            </div>
-
-            <button class="add-budget-btn" (click)="openBudgetForm()">
-                + Add Budget
-            </button>
-
-        </div>
-
-    </div>
-
-
-
-    @if (showForm) {
-    <div class="budget-modal-overlay">
-        <div class="budget-form-card">
-
-            <div class="form-header">
-                <div>
-                    <h2>Create Category Budget</h2>
-                    <p>Set a monthly spending limit for a category.</p>
+                <div class="page-title">
+                    <h1>Budgets</h1>
+                    <p>Manage your monthly spending limits.</p>
                 </div>
 
-                <button class="close-btn" (click)="closeBudgetForm()">×</button>
+                <div class="header-actions">
+                    
+                    <div class="month-selector">
+                        <input type="month" [value]="selectedMonth.substring(0, 7)"
+                            (change)="selectedMonth = $any($event.target).value + '-01'; loadBudgets()">
+                    </div>
+
+                    <button class="add-budget-btn" (click)="openBudgetForm()">
+                        + Add Budget
+                    </button>
+
+                </div>
+
             </div>
 
-            <div class="form-group">
-                <label>Category</label>
 
-                <select [(ngModel)]="newBudgetCategory">
-                    <option value="">Select Category</option>
 
-                    @for (category of categories; track category) {
-                    <option [value]="category">{{ category }}</option>
+            @if (showForm) {
+            <div class="budget-modal-overlay">
+                <div class="budget-form-card">
+
+                    <div class="form-header">
+                        <div>
+                            <h2>Create Category Budget</h2>
+                            <p>Set a monthly spending limit for a category.</p>
+                        </div>
+
+                        <button class="close-btn" (click)="closeBudgetForm()">×</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category</label>
+
+                        <select [(ngModel)]="newBudgetCategory">
+                            <option value="">Select Category</option>
+
+                            @for (category of categories; track category) {
+                            <option [value]="category">{{ category }}</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Monthly Budget Amount (AUD)</label>
+
+                        <div class="amount-input">
+                            <span>$</span>
+                            <input type="number" [(ngModel)]="newBudgetAmount" placeholder="Enter amount" min="0.01"
+                                step="0.01">
+                        </div>
+                    </div>
+
+                    @if (errorMessage) {
+                    <div class="form-error">{{ errorMessage }}</div>
                     }
-                </select>
-            </div>
 
-            <div class="form-group">
-                <label>Monthly Budget Amount (AUD)</label>
+                    <div class="form-actions">
+                        <button class="cancel-btn" (click)="closeBudgetForm()">
+                            Cancel
+                        </button>
 
-                <div class="amount-input">
-                    <span>$</span>
-                    <input type="number" [(ngModel)]="newBudgetAmount" placeholder="Enter amount" min="0.01"
-                        step="0.01">
+                        <button class="save-btn" (click)="saveBudget()" [disabled]="saving">
+                            {{ saving ? 'Saving...' : 'Save Budget' }}
+                        </button>
+
+                    </div>
+
                 </div>
             </div>
-
-            @if (errorMessage) {
-            <div class="form-error">{{ errorMessage }}</div>
             }
 
-            <div class="form-actions">
-                <button class="cancel-btn" (click)="closeBudgetForm()">
-                    Cancel
-                </button>
 
-                <button class="save-btn" (click)="saveBudget()" [disabled]="saving">
-                    {{ saving ? 'Saving...' : 'Save Budget' }}
-                </button>
-
+            @if (loading) {
+            <div class="loading">
+                Loading budgets...
             </div>
+            }
 
-        </div>
-    </div>
-    }
-
-
-    @if (loading) {
-    <div class="loading">
-        Loading budgets...
-    </div>
-    }
-
-    @if (errorMessage) {
-    <div class="error-message">
-        {{ errorMessage }}
-    </div>
-    }
-
-    @if (!loading) {
-
-    <!-- Summary Cards -->
-    <div class="summary-cards">
-
-        <div class="summary-card">
-            <div class="card-label">Total Monthly Budget</div>
-            <div class="card-value">
-                {{ totalBudget | currency:'AUD' }}
+            @if (errorMessage) {
+            <div class="error-message">
+                {{ errorMessage }}
             </div>
-        </div>
+            }
 
-        <div class="summary-card">
-            <div class="card-label">Total Spent</div>
-            <div class="card-value spent">
-                {{ totalSpent | currency:'AUD' }}
-            </div>
-        </div>
+            @if (!loading) {
 
-        <div class="summary-card">
-            <div class="card-label">Remaining Budget</div>
-            <div class="card-value" [class.negative]="remainingBudget < 0">
-                {{ remainingBudget | currency:'AUD' }}
-            </div>
-        </div>
+            <!-- Summary Cards -->
+            <div class="summary-cards">
 
-    </div>
-
-    <!-- Category Budgets -->
-    <div class="section-header">
-        <h2>Category Budgets</h2>
-    </div>
-
-    @if (budgets.length === 0) {
-
-    <div class="empty-state">
-        <h3>No budgets found</h3>
-        <p>Create your first category budget to start tracking your spending.</p>
-    </div>
-
-    } @else {
-
-    <div class="budget-list">
-
-        @for (budget of budgets; track budget.id) {
-
-        <div class="budget-card">
-
-            <div class="budget-top">
-
-                <div>
-                    <h3>{{ budget.category }}</h3>
-                    <p>
-                        {{ budget.totalSpent | currency:'AUD' }}
-                        spent of
-                        {{ budget.budgetAmount | currency:'AUD' }}
-                    </p>
+                <div class="summary-card">
+                    <div class="card-label">Total Monthly Budget</div>
+                    <div class="card-value">
+                        {{ totalBudget | currency:'AUD' }}
+                    </div>
                 </div>
 
-                <div class="budget-percentage">
-                    {{ budget.percentageUsed | number:'1.0-0' }}%
+                <div class="summary-card">
+                    <div class="card-label">Total Spent</div>
+                    <div class="card-value spent">
+                        {{ totalSpent | currency:'AUD' }}
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="card-label">Remaining Budget</div>
+                    <div class="card-value" [class.negative]="remainingBudget < 0">
+                        {{ remainingBudget | currency:'AUD' }}
+                    </div>
                 </div>
 
             </div>
 
-            <div class="progress-track">
-                <div class="progress-fill" [style.width.%]="budget.percentageUsed > 100 ? 100 : budget.percentageUsed"
-                    [style.background-color]="getProgressColor(budget.percentageUsed)">
+            <!-- Category Budgets -->
+            <div class="section-header">
+                <h2>Category Budgets</h2>
+            </div>
+
+            @if (budgets.length === 0) {
+
+            <div class="empty-state">
+                <h3>No budgets found</h3>
+                <p>Create your first category budget to start tracking your spending.</p>
+            </div>
+
+            } @else {
+
+            <div class="budget-list">
+
+                @for (budget of budgets; track budget.id) {
+
+                <div class="budget-card">
+
+                    <div class="budget-top">
+
+                        <div>
+                            <h3>{{ budget.category }}</h3>
+                            <p>
+                                {{ budget.totalSpent | currency:'AUD' }}
+                                spent of
+                                {{ budget.budgetAmount | currency:'AUD' }}
+                            </p>
+                        </div>
+
+                        <div class="budget-percentage">
+                            {{ budget.percentageUsed | number:'1.0-0' }}%
+                        </div>
+
+                    </div>
+
+                    <div class="progress-track">
+                        <div class="progress-fill"
+                            [style.width.%]="budget.percentageUsed > 100 ? 100 : budget.percentageUsed"
+                            [style.background-color]="getProgressColor(budget.percentageUsed)">
+                        </div>
+                    </div>
+
+                    <div class="budget-bottom">
+                        <span>
+                            Remaining:
+                            {{ budget.remainingAmount | currency:'AUD' }}
+                        </span>
+
+                        <span>
+                            Budget:
+                            {{ budget.budgetAmount | currency:'AUD' }}
+                        </span>
+                    </div>
+
                 </div>
+
+                }
+
             </div>
 
-            <div class="budget-bottom">
-                <span>
-                    Remaining:
-                    {{ budget.remainingAmount | currency:'AUD' }}
-                </span>
+            }
 
-                <span>
-                    Budget:
-                    {{ budget.budgetAmount | currency:'AUD' }}
-                </span>
-            </div>
+            }
 
         </div>
-
-        }
-
-    </div>
-
-    }
-
-    }
-
+    </main>
 </div>

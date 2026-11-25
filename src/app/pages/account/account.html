@@ -1,0 +1,145 @@
+
+<div class="app-container">
+
+    <app-sidebar></app-sidebar>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <h1>My Account</h1>
+                <p>View and manage your personal information.</p>
+            </div>
+        </header>
+
+        <div class="account-container">
+
+            @if (loading) {
+                <p class="message">Loading your profile...</p>
+            }
+
+            @if (errorMessage) {
+                <div class="error-message">{{ errorMessage }}</div>
+            }
+
+            @if (successMessage) {
+                <div class="success-message">{{ successMessage }}</div>
+            }
+
+            @if (!loading) {
+                <section class="account-card">
+
+                    <div class="profile-header">
+                        <div class="avatar">
+                            {{ profile.name.charAt(0).toUpperCase() }}
+                        </div>
+
+                        <div>
+                            <h2>{{ profile.name }}</h2>
+                            <p>{{ profile.email }}</p>
+                        </div>
+                    </div>
+
+                    <div class="section-header">
+                        <div>
+                            <h3>Personal Information</h3>
+                            <p>Manage your account details.</p>
+                        </div>
+
+                        @if (!isEditing) {
+                            <button class="edit-btn" (click)="enableEditing()">
+                                Edit Profile
+                            </button>
+                        }
+                    </div>
+
+                    @if (!isEditing) {
+
+                        <div class="profile-details">
+
+                            <div class="detail-item">
+                                <label>Full Name</label>
+                                <p>{{ profile.name }}</p>
+                            </div>
+
+                            <div class="detail-item">
+                                <label>Email Address</label>
+                                <p>{{ profile.email }}</p>
+                            </div>
+
+                            <div class="detail-item">
+                                <label>Age</label>
+                                <p>{{ profile.age }}</p>
+                            </div>
+
+                        </div>
+
+                    } @else {
+
+                        <form (ngSubmit)="saveProfile()">
+
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input
+                                    id="name"
+                                    type="text"
+                                    name="name"
+                                    [(ngModel)]="profile.name"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input
+                                    id="email"
+                                    type="email"
+                                    name="email"
+                                    [(ngModel)]="profile.email"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="age">Age</label>
+                                <input
+                                    id="age"
+                                    type="number"
+                                    name="age"
+                                    [(ngModel)]="profile.age"
+                                    min="18"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-actions">
+                                <button
+                                    type="button"
+                                    class="cancel-btn"
+                                    (click)="cancelEditing()"
+                                    [disabled]="saving"
+                                >
+                                    Cancel
+                                </button>
+
+                                <button
+                                    type="submit"
+                                    class="save-btn"
+                                    [disabled]="saving"
+                                >
+                                    {{ saving ? 'Saving...' : 'Save Changes' }}
+                                </button>
+                            </div>
+
+                        </form>
+
+                    }
+
+                </section>
+            }
+
+        </div>
+
+    </main>
+
+</div>

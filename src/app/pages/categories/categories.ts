@@ -2,6 +2,8 @@ import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { Sidebar } from '../../shared/sidebar/sidebar';
+
 import {
   ExpenseService,
   CategorySummary
@@ -9,7 +11,8 @@ import {
 
 @Component({
   selector: 'app-categories',
-  imports: [CurrencyPipe, DecimalPipe, FormsModule,RouterLink], templateUrl: './categories.html',
+  imports: [CurrencyPipe, DecimalPipe, FormsModule,RouterLink,Sidebar],
+  templateUrl: './categories.html',
   styleUrl: './categories.css'
 })
 export class Categories implements OnInit {
